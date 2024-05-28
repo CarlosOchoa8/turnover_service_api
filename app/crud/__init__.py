@@ -1,0 +1,1 @@
+from .collaborator_crud import crud_collaborator
