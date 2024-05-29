@@ -1,13 +1,13 @@
 import re
 from abc import ABC, abstractmethod
 from typing import Any
-
+from app.utils.classifier_model import clf_model
 import joblib
 import pandas as pd
 
 
-class CollaboratorProcessor(ABC):
-
+class CollaboratorProcessorStrategy(ABC):
+    """Abstract class for collaborator adition strategy"""
     @abstractmethod
     def process_data(self, collaborators_data: Any):
         pass
@@ -17,7 +17,7 @@ class CollaboratorProcessor(ABC):
         pass
 
 
-class SingleCollaborator(CollaboratorProcessor):
+class SingleCollaborator(CollaboratorProcessorStrategy):
     """Concrete class for process a single collaborator data"""
     fields = [
             'employee_count',
@@ -28,10 +28,11 @@ class SingleCollaborator(CollaboratorProcessor):
             'total_working_years']
 
     def process_data(self, collaborators_data: Any):
-        clf_model = joblib.load("clf.zahoree")
+        # clf_model = joblib.load("clf.zahoree")
+        model = clf_model.get_model()
         employee_number = collaborators_data['EmployeeNumber'][0]
         collaborators_data.drop(columns=['EmployeeNumber'], inplace=True)
-        prediction = clf_model.predict_proba(collaborators_data)
+        prediction = model.predict_proba(collaborators_data)
         return {'employee_number': employee_number,
                   'score': list(prediction[:, 1])[0]}
 
@@ -39,7 +40,7 @@ class SingleCollaborator(CollaboratorProcessor):
         return [col.replace('_', ' ').title().replace(' ', '')
                 for col in collaborators_data.columns]
 
-class MultipleCollaborators(CollaboratorProcessor):
+class MultipleCollaborators(CollaboratorProcessorStrategy):
     """Concrete class for process multiple collaborators data"""
     columns = ['EmployeeCount',
                 'Attrition',
@@ -50,14 +51,15 @@ class MultipleCollaborators(CollaboratorProcessor):
 
     def process_data(self, collaborators_data: Any) -> list:
         collaborators_data.drop(columns=self.columns, inplace=True)
-        clf_model = joblib.load("clf.zahoree")
+        # clf_model = joblib.load("clf.zahoree")
+        model = clf_model.get_model()
         collaborators_score = []
 
         for _, row in collaborators_data.iterrows():
             collaborator_json = row.to_dict()
             employee_number = collaborator_json.pop('EmployeeNumber')
             data_frame = pd.DataFrame([collaborator_json])
-            prediction = clf_model.predict_proba(data_frame)
+            prediction = model.predict_proba(data_frame)
             prediction_score = prediction[:, 1][0]
             collaborators_score.append({"employee_number": employee_number,
                                     "score": prediction_score})
