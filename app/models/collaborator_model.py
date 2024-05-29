@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String
 
-# from app.config.database.base_class import Base
 from app.database.base_class import Base
 
 
@@ -9,7 +8,6 @@ class Collaborator(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     age = Column(Integer, nullable=False)
-    # Revisar attrition
     attrition = Column(String, nullable=True)
     business_travel = Column(String, nullable=False)
     daily_rate = Column(Integer, nullable=False)

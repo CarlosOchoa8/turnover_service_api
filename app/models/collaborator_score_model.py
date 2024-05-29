@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Float, ForeignKey, Integer
 from sqlalchemy.orm import Relationship
-# from app.config.database.base_class import Base
+
 from app.database.base_class import Base
 
 
