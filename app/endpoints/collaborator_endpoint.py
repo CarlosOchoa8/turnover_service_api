@@ -1,7 +1,3 @@
-import re
-from typing import Tuple
-
-import joblib
 import pandas as pd
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, status
 from fastapi.responses import JSONResponse
@@ -66,7 +62,7 @@ def create(collaborator_in: CollaboratorCreateSchema,
         return crud_collaborator_score.create(db=db, obj_in=obj_in)
     except Exception as exc:
         raise HTTPException(
-            detail=f"Error adding collaborator.{str(exc)}",
+            detail="Error adding collaborator.",
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
         ) from exc
 
@@ -76,23 +72,28 @@ def upload_csv(file: UploadFile, db: Session = Depends(get_db)) -> JSONResponse:
     Processes a CSV file coantaining collaborator data,
     creates collaborators and their score and adds them to the database.
     """
-    # clf_model = joblib.load("clf.zahoree")
-    collaborators_csv = pd.read_csv(file.filename)
+    try:
+        collaborators_csv = pd.read_csv(file.filename)
 
-    collaborators_copy = collaborators_csv.copy()
-    collaborators_copy.columns = multiple_collaborators.update_columns(collaborators_csv)
-    collaborators_list = [
-    CollaboratorCreateSchema(**row.to_dict()) for _, row in collaborators_copy.iterrows()
-    ]
+        collaborators_copy = collaborators_csv.copy()
+        collaborators_copy.columns = multiple_collaborators.update_columns(collaborators_csv)
+        collaborators_list = [
+        CollaboratorCreateSchema(**row.to_dict()) for _, row in collaborators_copy.iterrows()
+        ]
 
-    collaborators_score_list = multiple_collaborators.process_data(collaborators_csv)
+        collaborators_score_list = multiple_collaborators.process_data(collaborators_csv)
 
-    crud_collaborator.create_bulk(db=db, obj_in=collaborators_list)
-    crud_collaborator_score.create_bulk(db=db, obj_in=collaborators_score_list)
+        crud_collaborator.create_bulk(db=db, obj_in=collaborators_list)
+        crud_collaborator_score.create_bulk(db=db, obj_in=collaborators_score_list)
 
-    return JSONResponse(
-        content={"message": "The collaborators and their scores were added correctly."}
-    )
+        return JSONResponse(
+            content={"message": "The collaborators and their scores were added correctly."}
+        )
+    except Exception as exc:
+        raise HTTPException(
+            detail="Error uploading csv data.}",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        ) from exc
 
 
 

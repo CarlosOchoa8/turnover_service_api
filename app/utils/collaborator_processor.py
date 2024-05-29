@@ -1,9 +1,10 @@
 import re
 from abc import ABC, abstractmethod
 from typing import Any
-from app.utils.classifier_model import clf_model
-import joblib
+
 import pandas as pd
+
+from app.utils.classifier_model import clf_model
 
 
 class CollaboratorProcessorStrategy(ABC):
@@ -28,7 +29,6 @@ class SingleCollaborator(CollaboratorProcessorStrategy):
             'total_working_years']
 
     def process_data(self, collaborators_data: Any):
-        # clf_model = joblib.load("clf.zahoree")
         model = clf_model.get_model()
         employee_number = collaborators_data['EmployeeNumber'][0]
         collaborators_data.drop(columns=['EmployeeNumber'], inplace=True)
@@ -51,7 +51,6 @@ class MultipleCollaborators(CollaboratorProcessorStrategy):
 
     def process_data(self, collaborators_data: Any) -> list:
         collaborators_data.drop(columns=self.columns, inplace=True)
-        # clf_model = joblib.load("clf.zahoree")
         model = clf_model.get_model()
         collaborators_score = []
 
