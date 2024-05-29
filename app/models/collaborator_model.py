@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String
 
 from app.database.base_class import Base
-
+from sqlalchemy.orm import relationship
 
 class Collaborator(Base):
     __tablename__  = "collaborator"
@@ -42,3 +42,5 @@ class Collaborator(Base):
     years_in_current_role = Column(Integer, nullable=False)
     years_since_last_promotion = Column(Integer, nullable=False)
     years_with_curr_manager = Column(Integer, nullable=False)
+
+    collaborator_score = relationship("CollaboratorScore", back_populates="collaborator")
