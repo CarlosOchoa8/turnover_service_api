@@ -1,1 +1,2 @@
 from .collaborator_crud import crud_collaborator
+from .collaborator_score_crud import crud_collaborator_score
