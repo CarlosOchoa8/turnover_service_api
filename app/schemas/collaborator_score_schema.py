@@ -9,6 +9,14 @@ class CollaboratorScoreBaseSchema(BaseModel):
     score: float | str
 
 
+class CollaboratorScoreCreateSchema(BaseModel):
+    """
+    A schema class representing the base attributes of a collaborator score.
+    """
+    employee_number: int
+    score: float | str
+
+
 class CollaboratorScoreResponseSchema(CollaboratorScoreBaseSchema):
     """
     A schema class representing response for collaborator score.

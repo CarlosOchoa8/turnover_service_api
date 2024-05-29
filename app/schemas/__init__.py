@@ -1,2 +1,2 @@
-from .collaborator_schema import CollaboratorCreateSchema, CollaboratorUpdateSchema
-from .collaborator_score_schema import CollaboratorScoreResponseSchema
+from .collaborator_schema import CollaboratorCreateSchema
+from .collaborator_score_schema import CollaboratorScoreCreateSchema, CollaboratorScoreResponseSchema
