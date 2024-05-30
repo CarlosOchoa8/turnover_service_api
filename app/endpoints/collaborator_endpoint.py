@@ -33,11 +33,11 @@ def create(collaborator_in: CollaboratorCreateSchema,
         collaborator_id=collaborator_id,db=db
         ):
         collab_number = collaborator.collaborator_score[0].employee_number
-        collab_score = collaborator.collaborator_score[0].score
+        collab_score = round(collaborator.collaborator_score[0].score * 100, 2)
         return JSONResponse(
             content={"message": f"Collaborator {collaborator_id} is already registered.",
                      "collaborator id": collab_number,
-                     "collaborator score": collab_score},
+                     "collaborator score": f"{collab_score}%"},
                      status_code=200
                      )
     try:
