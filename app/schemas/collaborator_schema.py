@@ -45,16 +45,6 @@ class CollaboratorBaseSchema(BaseModel):
     years_since_last_promotion: int
     years_with_curr_manager: int
 
-    # @field_validator('*')
-    # def transform_keys(cls, v):
-    #     if isinstance(v, dict):
-    #         return {cls.transform_key(k): v for k, v in v.items()}
-    #     return v
-
-    # @classmethod
-    # def transform_key(cls, key: str) -> str:
-    #     return ''.join(['_' + i.lower() if i.isupper() else i for i in key]).lstrip('_')
-
 
 class CollaboratorCreateSchema(CollaboratorBaseSchema):
     pass
