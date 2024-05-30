@@ -66,7 +66,7 @@ def create(collaborator_in: CollaboratorCreateSchema,
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
         ) from exc
 
-@router.post("/add_collaborators", status_code=200)
+@router.post("/upload_file", status_code=200)
 def upload_csv(file: UploadFile, db: Session = Depends(get_db)) -> JSONResponse:
     """ 
     Processes a CSV file coantaining collaborator data,
