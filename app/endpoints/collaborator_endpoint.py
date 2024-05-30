@@ -12,7 +12,7 @@ from app.utils.collaborator_processor import (multiple_collaborators,
 
 router = APIRouter()
 
-@router.get("/score/{collaborator_id}", status_code=200)
+@router.get("/score/", response_model=CollaboratorScoreResponseSchema, status_code=200)
 def get_collaborator_score(collaborator_id: int, db: Session = Depends(get_db)):
     """ Return corresponding score for a collaborator by id."""
 
