@@ -2,7 +2,7 @@ import joblib
 
 
 class ClassifierModel:
-    """Get or open a model instance"""
+    """Class to returns just one object of a model instance"""
     _instances = {}
 
     def __new__(cls, *args, **kwargs) -> None:
@@ -14,6 +14,7 @@ class ClassifierModel:
         self.model = joblib.load(model)
 
     def get_model(self):
+        """Return the single instance of model 'model' """
         return self.model
 
 

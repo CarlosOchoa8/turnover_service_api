@@ -20,15 +20,12 @@ class CollaboratorProcessorStrategy(ABC):
 
 class SingleCollaborator(CollaboratorProcessorStrategy):
     """Concrete class for process a single collaborator data"""
-    fields = [
-            'employee_count',
-            'attrition',
-            'job_level',
-            'over18',
-            'standard_hours',
-            'total_working_years']
 
     def process_data(self, collaborators_data: Any):
+        """ 
+        Select and drop column employee_column from data frame to predict
+        properly.
+        """
         model = clf_model.get_model()
         employee_number = collaborators_data['EmployeeNumber'][0]
         collaborators_data.drop(columns=['EmployeeNumber'], inplace=True)
@@ -37,6 +34,7 @@ class SingleCollaborator(CollaboratorProcessorStrategy):
                   'score': list(prediction[:, 1])[0]}
 
     def update_columns(self, collaborators_data: Any):
+        """Update columns from of DataFrame from snake_case to CamelCase."""
         return [col.replace('_', ' ').title().replace(' ', '')
                 for col in collaborators_data.columns]
 
@@ -50,6 +48,10 @@ class MultipleCollaborators(CollaboratorProcessorStrategy):
                 'TotalWorkingYears']
 
     def process_data(self, collaborators_data: Any) -> list:
+        """
+        Drop columns from DataFrame and make the correspondic predict
+        using the model
+        """
         collaborators_data.drop(columns=self.columns, inplace=True)
         model = clf_model.get_model()
         collaborators_score = []
@@ -65,6 +67,7 @@ class MultipleCollaborators(CollaboratorProcessorStrategy):
         return collaborators_score
 
     def update_columns(self, collaborators_data: Any):
+        """Update columns from of DataFrame from CamelCase to snake_case."""
         return [re.sub(r'(?<=[a-z])(?=[A-Z0-9])|(?<=[0-9])(?=[A-Z])', '_', col)
                                   .lower() for col in collaborators_data.columns]
 
