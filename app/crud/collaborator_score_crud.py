@@ -1,10 +1,6 @@
-"""
-Generate an Object of CRUD
-"""
 from typing import Any
 
 import numpy as np
-from sqlalchemy import insert
 from sqlalchemy.orm import Session
 from app.crud.base_crud import CRUDBuilder
 from app.models import CollaboratorScore as CollaboratorScoreModel
@@ -12,13 +8,9 @@ from app.schemas import CollaboratorCreateSchema
 
 
 class CRUDCollaboratorScore(CRUDBuilder):
-    """Item CRUD class
-
-    Args:
-        CRUDBase ([Item, ItemCreate, ItemUpdate])
     """
-    def __init__(self, model) -> None:
-        self.model = model
+    CRUD class object with default methods to Create and Read for CollaboratorScoreModel
+    """
 
     def create(self, db: Session, obj_in: CollaboratorCreateSchema | dict[str | Any]) -> CollaboratorScoreModel:
         """Create a collaborator score object"""
