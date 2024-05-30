@@ -33,8 +33,6 @@ def test_existent_collaborator_in_post_method():
     """
     response = client.post(
         "api/v1/collaborators/", json=collaborator_data)
-    print("TEXTOOOOOOOOOOOOOOOOOOOOTEXTOOOOOOOOOOOOOOOOOOOOTEXTOOOOOOOOOOOOOOOOOOOOTEXTOOOOOOOOOOOOOOOOOOOO")
-    print(response.text)
     assert response.status_code == 200
     assert '{"message":"Collaborator 12345 is already registered.","collaborator id":12345,"collaborator score":0.3249136199461228}' in response.text
 
